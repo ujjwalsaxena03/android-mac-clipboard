@@ -1,0 +1,56 @@
+# android-mac-clipboard
+
+Universal-Clipboard-style sharing from an **Android phone** (Quick Share → AirDrop) to a **Mac**.
+
+Share text on the phone, press **Cmd+V** on the Mac. No taps on the Mac, nothing to install on the phone.
+
+Built and tested with a **Pixel 11** on **macOS 27**. Google's [Quick Share ↔ AirDrop page](https://www.android.com/quick-share/with-iphone/) lists the Android phones that can AirDrop (Pixel, Samsung Galaxy, OnePlus, OPPO, HONOR, vivo, Xiaomi and more). The Mac side only reacts to the AirDrop prompt, so it should work with those too, but I've only tested the Pixel 11.
+
+## The problem
+- Apple's Universal Clipboard only works between Apple devices.
+- Android phones with Quick Share can AirDrop to a Mac, but text arrives as a `.txt` file.
+- The phone isn't on your Apple ID, so macOS always shows an **Accept** prompt. There's no setting to turn that off.
+
+## How it works
+A small stay-open AppleScript app runs in the background and checks once a second:
+
+1. **Auto-accept.** It watches Notification Center for the AirDrop banner and clicks Accept through the Accessibility API.
+   - Text: the banner's buttons have no labels, so it clicks button 2.
+   - Files: Accept is a dropdown with no scriptable items, so it presses `↓ ↓ Return` to pick *Save to Downloads*.
+2. **Clipboard.** A shell script takes any new `.txt` in `~/Downloads`, pipes it into `pbcopy`, and deletes the file.
+
+## Install
+```bash
+git clone <this repo> && cd android-mac-clipboard
+./install.sh
+```
+Then grant the permission (see below), add the app to Login Items, and relaunch it.
+
+### Permission
+On **macOS 27** the pane is *Privacy & Security → Device Control and Data Access* (*Accessibility* on older versions).
+Turn on both `AndroidClipboard` and the entry named **`applet`**. The permission attaches to the inner `applet` binary, and it must be re-granted (remove with −, re-add with +) after every rebuild.
+
+On the first text transfer, macOS also asks to let the app access your Downloads folder. Click Allow.
+
+### Sending from the phone
+Set the Mac's AirDrop to *Everyone for 10 Minutes*, then Quick Share to the Mac. On Samsung, turn on *Share with Apple devices* in Quick Share settings.
+
+## Caveats
+- **It auto-accepts every AirDrop while running.** Keep AirDrop on *Contacts Only* except when sending from your phone, or quit the app.
+- Any `.txt` landing in `~/Downloads` within a minute is copied and then deleted with `rm`, so it skips the Trash and can't be recovered.
+- It's position/keyboard based, so Apple changing the prompt layout or the dropdown order (Photos first, Downloads second) can break it. Change `repeat 2 times` if the order changes.
+- Keystrokes go to the focused app, so avoid typing while a file is arriving.
+
+## Debugging
+- `cat ~/Library/Logs/android_click.log`: "not allowed assistive access" means the `applet` permission needs re-granting.
+- `tail ~/Library/Logs/android_clipboard.log`: shows copy/delete results.
+
+## Uninstall
+```bash
+pkill -f AndroidClipboard
+rm -rf ~/Applications/AndroidClipboard.app ~/bin/android_clipboard.sh
+```
+Then remove it from Login Items and the permission list.
+
+## License
+MIT
