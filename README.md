@@ -1,6 +1,6 @@
 # android-mac-clipboard
 
-Quick and native copy-paste from **Android** to **Mac**. (Inspired by Apple ecosystem's copy-paste feature)
+Quick and native text copy-paste from **Android** to **Mac**. (Inspired by Apple ecosystem's copy-paste feature)
 
 Share text via Quick Share, press **Cmd+V** on the Mac. No taps on the Mac, nothing to install on the phone, works natively. <br>
 Bonus: No need to manually click "Accept" even when receiving files from an Android phone.
