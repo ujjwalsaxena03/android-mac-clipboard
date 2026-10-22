@@ -2,7 +2,7 @@
 
 Quick and native copy-paste from **Android** to **Mac**. (Inspired by Apple ecosystem's copy-paste feature)
 
-Share text via Quick Share, press **Cmd+V** on the Mac. No taps on the Mac, nothing to install on the phone, works natively.
+Share text via Quick Share, press **Cmd+V** on the Mac. No taps on the Mac, nothing to install on the phone, works natively. <br>
 Bonus: No need to manually click "Accept" even when receiving files from an Android phone.
 
 Built and tested with a **Pixel 11** on **macOS 27**. Google's [Quick Share ↔ AirDrop page](https://www.android.com/quick-share/with-iphone/) lists the Android phones that can AirDrop (Pixel, Samsung Galaxy, OnePlus, OPPO, HONOR, vivo, Xiaomi and more). The Mac side only reacts to the AirDrop prompt, so it should work with those too.
