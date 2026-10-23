@@ -1,9 +1,7 @@
-# android-mac-clipboard
+# android-mac-quick-share-enhancer
 
-Quick and native text copy-paste from **Android** to **Mac**. (Inspired by Apple ecosystem's copy-paste feature)
-
-Share text via Quick Share, press **Cmd+V** on the Mac. No taps on the Mac, nothing to install on the phone, works natively. <br>
-Bonus: No need to manually click "Accept" even when receiving files from an Android phone.
+-> Share text via Quick Share, press **Cmd+V** on the Mac. No app needed to install on the phone, works natively. <br>
+-> No need for manual extra taps on "Accept" prompts on your Mac when receiving files from an Android phone.
 
 Built and tested with a **Pixel 11** on **macOS 27**. Google's [Quick Share ↔ AirDrop page](https://www.android.com/quick-share/with-iphone/) lists the Android phones that can AirDrop (Pixel, Samsung Galaxy, OnePlus, OPPO, HONOR, vivo, Xiaomi and more). The Mac side only reacts to the AirDrop prompt, so it should work with those too.
 
@@ -15,10 +13,10 @@ Built and tested with a **Pixel 11** on **macOS 27**. Google's [Quick Share ↔ 
 ## How it works
 A small stay-open AppleScript app runs in the background and checks once a second:
 
-1. **Auto-accept.** It watches Notification Center for the AirDrop banner and clicks Accept through the Accessibility API.
+1. **Clipboard.** A shell script takes any new `.txt` in `~/Downloads`, pipes it into `pbcopy` (Mac Clipboard), and deletes the file.
+2. **Auto-accept.** It watches Notification Center for the AirDrop banner and clicks Accept through the Accessibility API.
    - Text: the banner's buttons have no labels, so it clicks button 2 (Accept).
    - Files: Accept is now a dropdown with 2 options (Save to Photos, Save to Downloads) and no scriptable items, so it automatically presses `↓ ↓ Return` and picks *Save to Downloads*.
-2. **Clipboard.** A shell script takes any new `.txt` in `~/Downloads`, pipes it into `pbcopy` (Mac Clipboard), and deletes the file.
 
 ## Install
 ```bash
